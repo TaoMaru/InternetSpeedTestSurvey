@@ -15,7 +15,7 @@
     End Sub
 
     Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
-        lstSpeeds.Text = ""
+        lstSpeeds.Items.Clear()
         lblAverage.Visible = False
         btnSpeed.Enabled = True
     End Sub
@@ -32,7 +32,8 @@
         Dim decAverage As Decimal = 0D  'average of speeds
 
         'input box variables: intructions & err msgs:
-        Dim strIBoxMsg As String = "Please enter the your home Internet Speed in Mbps:"
+        Dim strIBoxMsg As String = "Please enter the your home Internet Speed in Mbps: #"
+        Dim strIBoxEnding As String = vbCrLf & "Click Cancel when done!"
         Dim strIBoxTitle As String = "Internet Speed"
         Dim strNotNumericErrMsg As String = "Error. Please enter your home Internet Speed in Mbps:"
         Dim strNegErrMsg As String = "Error. Please enter speeds as a positive number of Mbps:"
@@ -42,7 +43,7 @@
         Dim intNumEntries As Integer = 1
 
         'Initialize input box with instruction msg, numEntries, and the boxTitle
-        strSpeed = InputBox(strIBoxMsg & intNumEntries, strIBoxTitle)
+        strSpeed = InputBox(strIBoxMsg & intNumEntries & strIBoxEnding, strIBoxTitle)
 
         'Get user input until max of 10 entries or user clicks OK or Cancel
         Do Until intNumEntries > intMaxEntries Or strSpeed.Equals("")
@@ -64,7 +65,7 @@
             End If
             'get new speed input:
             If intNumEntries <= intMaxEntries Then
-                strSpeed = InputBox(strIBoxMsg & intNumEntries, strIBoxTitle)
+                strSpeed = InputBox(strIBoxMsg & intNumEntries & strIBoxEnding, strIBoxTitle)
             End If
         Loop
 
