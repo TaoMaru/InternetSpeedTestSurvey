@@ -8,13 +8,13 @@
     ''          The user may clear all input to reset their entry and average at any time
 
     Private Sub frmSpeed_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Hide lblAverage on load
+        'Hide lblAverage & enable btnSpeed on load
         lblAverage.Visible = False
-        lstSpeeds.Text = ""
         btnSpeed.Enabled = True
     End Sub
 
     Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
+        ' resets item list in lstSpeeds, hide lblAverage, & enable btnSpeed
         lstSpeeds.Items.Clear()
         lblAverage.Visible = False
         btnSpeed.Enabled = True
@@ -50,17 +50,17 @@
             If IsNumeric(strSpeed) Then
                 decSpeed = Convert.ToDecimal(strSpeed)
                 If decSpeed > 0 Then
-                    'add to sumOfSpeeds, increment numEntries
-                    lstSpeeds.Items.Add(strSpeed)
-                    decSumOfSpeeds += decSpeed
-                    intNumEntries += 1
-                    strIBoxMsg = strIBoxMsg
+                    'valid input received
+                    lstSpeeds.Items.Add(strSpeed) 'add speed to list
+                    decSumOfSpeeds += decSpeed    'add speed to sum
+                    intNumEntries += 1            'increment numEntries
+                    strIBoxMsg = strIBoxMsg       'set instruction msg
                 Else
-                    ' input negative, display err msg
+                    ' input negative, set msg to negative error msg
                     strIBoxMsg = strNegErrMsg
                 End If
             Else
-                ' input not numeric, display err msg
+                ' input not numeric, set msg to not a number error msg
                 strIBoxMsg = strNotNumericErrMsg
             End If
             'get new speed input:
