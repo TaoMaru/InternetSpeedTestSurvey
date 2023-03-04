@@ -11,6 +11,7 @@
         'Hide lblAverage on load
         lblAverage.Visible = False
         lstSpeeds.Text = ""
+        btnSpeed.Enabled = True
     End Sub
 
     Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
@@ -31,8 +32,8 @@
         Dim decAverage As Decimal = 0D  'average of speeds
 
         'input box variables: intructions & err msgs:
-        Dim strBoxMsg As String = "Please enter the your home Internet Speed in Mbps:"
-        Dim strBoxTitle As String = "Internet Speed"
+        Dim strIBoxMsg As String = "Please enter the your home Internet Speed in Mbps:"
+        Dim strIBoxTitle As String = "Internet Speed"
         Dim strNotNumericErrMsg As String = "Error. Please enter your home Internet Speed in Mbps:"
         Dim strNegErrMsg As String = "Error. Please enter speeds as a positive number of Mbps:"
 
@@ -41,8 +42,43 @@
         Dim intNumEntries As Integer = 1
 
         'Initialize input box with instruction msg, numEntries, and the boxTitle
-        strSpeed = InputBox(strBoxMsg & intNumEntries, strBoxTitle)
+        strSpeed = InputBox(strIBoxMsg & intNumEntries, strIBoxTitle)
 
+        'Get user input until max of 10 entries or user clicks OK or Cancel
+        Do Until intNumEntries > intMaxEntries Or strSpeed.Equals("")
+            If IsNumeric(strSpeed) Then
+                decSpeed = Convert.ToDecimal(strSpeed)
+                If decSpeed > 0 Then
+                    'add to sumOfSpeeds, increment numEntries
+                    lstSpeeds.Items.Add(strSpeed)
+                    decSumOfSpeeds += decSpeed
+                    intNumEntries += 1
+                    strIBoxMsg = strIBoxMsg
+                Else
+                    ' input negative, display err msg
+                    strIBoxMsg = strNegErrMsg
+                End If
+            Else
+                ' input not numeric, display err msg
+                strIBoxMsg = strNotNumericErrMsg
+            End If
+            'get new speed input:
+            If intNumEntries <= intMaxEntries Then
+                strSpeed = InputBox(strIBoxMsg & intNumEntries, strIBoxTitle)
+            End If
+        Loop
+
+        'calculate average
+        If intNumEntries > 1 Then
+            decAverage = decSumOfSpeeds / (intNumEntries - 1)
+            lblAverage.Text = "Average Internet Speed: " & decAverage.ToString("F2")
+        Else
+            ' no entries were input, display no speeds msg
+            lblAverage.Text = "No Speeds Entered"
+        End If
+
+        lblAverage.Visible = True 'show average
+        btnSpeed.Enabled = False  'disable speed btn
 
     End Sub
 End Class
